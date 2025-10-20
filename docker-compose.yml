@@ -1,11 +1,69 @@
-version: "3.8"
-
 services:
   backend:
-    build: .
-    container_name: server-express-compose
+    build: ./backend
+    container_name: backend_service
+    restart: unless-stopped
+    env_file: .env
+    environment:
+      - DATABASE_URL=postgresql://${DB_USER}:${DB_PASSWORD}@db:5432/${DB_NAME}
     ports:
-      - "3000:3000"
+      - "${APP_PORT}:${APP_PORT}"
+    depends_on:
+      - db
+    networks:
+      - app-network
+  db:
+    image: postgres:14-alpine
+    container_name: postgres_db
+    restart: unless-stopped
+    env_file: .env
+    environment:
+      - POSTGRES_USER=${DB_USER}
+      - POSTGRES_PASSWORD=${DB_PASSWORD}
+      - POSTGRES_DB=${DB_NAME}
+    ports:
+      - "5432:5432"
     volumes:
-      - .:/app
-      - /app/node_modules
+      - db-data:/var/lib/postgresql/data
+    networks:
+      - app-network
+  etcd:
+    image: quay.io/coreos/etcd:v3.5.23
+    container_name: etcd_server
+    restart: unless-stopped
+    command:
+      - /usr/local/bin/etcd
+      - --name=etcd-server
+      - --listen-client-urls=http://0.0.0.0:2379
+      - --advertise-client-urls=http://etcd:2379
+    healthcheck:
+      test: ["CMD", "etcdctl", "endpoint", "health"]
+      interval: 5s
+      timeout: 10s
+      retries: 5
+    ports:
+      - "2379:2379"
+    networks:
+      - app-network
+
+  apisix:
+    image: apache/apisix:3.5.0-debian
+    container_name: apisix_gateway
+    restart: unless-stopped
+    volumes:
+      - ./apisix/config.yaml:/usr/local/apisix/conf/config.yaml:ro
+    depends_on:
+      - etcd
+    ports:
+      - "9180:9180" 
+      - "9080:9080" 
+    networks:
+      - app-network
+    env_file: .env
+
+networks:
+  app-network:
+    driver: bridge
+
+volumes:
+  db-data:

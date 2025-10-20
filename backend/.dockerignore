@@ -1,0 +1,30 @@
+Abaikan folder dependensi lokal. Ini akan di-install di dalam container.
+
+node_modules
+
+Abaikan file environment. Variabel akan di-inject saat runtime.
+
+.env
+.env.*
+!.env.example
+
+Abaikan file log dari package manager
+
+npm-debug.log
+yarn-error.log
+
+Abaikan folder hasil build (misalnya dari TypeScript)
+
+dist
+build
+
+Abaikan folder version control dan konfigurasi IDE
+
+.git
+.vscode
+.idea
+
+Abaikan file yang dibuat oleh sistem operasi
+
+.DS_Store
+Thumbs.db

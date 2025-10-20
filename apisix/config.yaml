@@ -1,0 +1,42 @@
+# apisix/config.yaml
+
+etcd:
+  host:
+    - "http://etcd:2379"
+  prefix: "/apisix"
+  timeout: 30
+
+deployment:
+  role: data_plane
+  role_data_plane:
+    config_provider: yaml
+
+consumers:
+  - username: user_app
+    plugins:
+      jwt-auth:
+        key: "app-key"
+        secret: "${JWT_SECRET}"
+        algorithm: "HS256"
+
+routes:
+  - id: "auth-route"
+    uri: /api/auth/login
+    name: "auth-service-route"
+    upstream:
+      nodes:
+        "${UPSTREAM_HOST}": 1
+      type: roundrobin
+    methods: ["POST"]
+
+  - id: "mahasiswa-route"
+    uri: /api/mahasiswa/*
+    name: "mahasiswa-service-route"
+    upstream:
+      nodes:
+        "${UPSTREAM_HOST}": 1
+      type: roundrobin
+    plugins:
+      jwt-auth: {}
+
+    methods: ["GET", "POST", "PUT", "DELETE"] 
