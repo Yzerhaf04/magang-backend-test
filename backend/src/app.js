@@ -8,19 +8,18 @@ const mahasiswaRoutes = require("./routes/mahasiswa.routes");
 
 const app = express();
 
+const adminRoutes = require("./routes/admin.routes.js");
+app.use("/api/admins", adminRoutes);
+
 // --- PENGATURAN CORS YANG LEBIH SPESIFIK ---
 const corsOptions = {
-  // Tentukan origin frontend Anda. Ini lebih aman daripada '*'.
-  // Ganti port 5173 jika port Vue Anda berbeda.
   origin: "http://localhost:5173", 
   methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
-  // PENTING: Izinkan header 'Authorization' agar token bisa dikirim.
   allowedHeaders: ["Content-Type", "Authorization"], 
 };
 
-// Gunakan konfigurasi CORS yang sudah kita buat
+
 app.use(cors(corsOptions));
-// --- AKHIR PENGATURAN CORS ---
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
