@@ -1,8 +1,4 @@
-// Impor objek db yang berisi semua model dari database
-const db = require('../models');
-
-// Ambil model 'Mahasiswa' dari objek db. 
-// Nama 'Mahasiswa' harus sama persis dengan 'modelName' di file modelnya.
+const db = require("../models");
 const Mahasiswa = db.Mahasiswa;
 
 /**
@@ -25,8 +21,8 @@ const findAll = async () => {
 };
 
 /**
- * Service untuk mencari satu mahasiswa berdasarkan Primary Key (ID).
- * @param {number} id - ID mahasiswa yang akan dicari.
+ * Service untuk mencari satu mahasiswa berdasarkan Primary Key (Id).
+ * @param {number} id - Id mahasiswa yang akan dicari.
  * @returns {Promise<object|null>} Objek mahasiswa jika ditemukan, atau null jika tidak.
  */
 const findById = async (id) => {
@@ -36,34 +32,34 @@ const findById = async (id) => {
 
 /**
  * Service untuk memperbarui data mahasiswa berdasarkan ID.
- * @param {number} id - ID mahasiswa yang akan diperbarui.
+ * @param {number} id - Id mahasiswa yang akan diperbarui.
  * @param {object} dataMahasiswa - Data baru untuk mahasiswa.
  * @returns {Promise<number>} Angka 1 jika update berhasil, 0 jika tidak ada data yang diupdate.
  */
 const update = async (id, dataMahasiswa) => {
   const [hasil] = await Mahasiswa.update(dataMahasiswa, {
-    where: { id: id }
+    where: { id: id },
   });
   return hasil;
 };
 
 /**
  * Service untuk menghapus data mahasiswa berdasarkan ID.
- * @param {number} id - ID mahasiswa yang akan dihapus.
+ * @param {number} id - Id mahasiswa yang akan dihapus.
  * @returns {Promise<number>} Angka 1 jika delete berhasil, 0 jika tidak ada data yang dihapus.
  */
 const destroy = async (id) => {
   const hasil = await Mahasiswa.destroy({
-    where: { id: id }
+    where: { id: id },
   });
   return hasil;
 };
 
-// Ekspor semua fungsi service agar bisa digunakan di lapisan lain (misal: controller)
+// Eksport semua fungsi service agar bisa digunakan
 module.exports = {
   create,
   findAll,
   findById,
   update,
-  destroy
+  destroy,
 };

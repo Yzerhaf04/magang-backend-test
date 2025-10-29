@@ -11,7 +11,7 @@ exports.findAll = async (req, res) => {
   }
 };
 
-// GET mahasiswa by ID
+// GET mahasiswa by Id
 exports.findOne = async (req, res) => {
   try {
     const mahasiswa = await Mahasiswa.findByPk(req.params.id);
@@ -22,7 +22,7 @@ exports.findOne = async (req, res) => {
   }
 };
 
-// POST tambah mahasiswa
+// POST tambah data mahasiswa
 exports.create = async (req, res) => {
   try {
     const { nama_mahasiswa, asal_kota, agama } = req.body;
@@ -33,7 +33,7 @@ exports.create = async (req, res) => {
   }
 };
 
-// PUT ubah mahasiswa
+// PUT ubah data mahasiswa
 exports.update = async (req, res) => {
   try {
     const { id } = req.params;
@@ -48,7 +48,7 @@ exports.update = async (req, res) => {
   }
 };
 
-// DELETE hapus mahasiswa
+// DELETE hapus data mahasiswa
 exports.delete = async (req, res) => {
   try {
     const { id } = req.params;

@@ -11,7 +11,7 @@ const app = express();
 const adminRoutes = require("./routes/admin.routes.js");
 app.use("/api/admins", adminRoutes);
 
-// --- PENGATURAN CORS YANG LEBIH SPESIFIK ---
+// --- PENGATURAN CORS ---
 const corsOptions = {
   origin: "http://localhost:5173", 
   methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
@@ -27,7 +27,7 @@ app.use(express.urlencoded({ extended: true }));
 app.get("/", (req, res) => {
   res
     .status(200)
-    .json({ message: "Selamat datang di API. Server berjalan dengan baik." });
+    .json({ message: "Selamat datang. Server berjalan dengan baik." });
 });
 
 app.use("/api/auth", authRoutes);
